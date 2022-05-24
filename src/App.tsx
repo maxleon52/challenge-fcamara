@@ -1,12 +1,14 @@
 import GlobalStyles from "./styles/GlobalStyles";
 import Header from "./components/Header";
-import Users from "./pages/Users";
+import ScreenUsers from "./pages/ScreenUsers";
+
+import "./style.css";
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Users />
+      <ScreenUsers />
       <GlobalStyles />
     </div>
   );

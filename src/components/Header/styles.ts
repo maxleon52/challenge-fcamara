@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  border: 2px solid green;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,7 +9,6 @@ export const Container = styled.div`
 `;
 
 export const Options = styled.div`
-  border: 2px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +46,6 @@ export const Badger = styled.div`
 `;
 
 export const CurrentUser = styled.div`
-  border: 2px solid blue;
   display: flex;
   align-items: center;
   justify-content: center;

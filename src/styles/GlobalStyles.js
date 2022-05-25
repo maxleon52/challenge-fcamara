@@ -11,6 +11,10 @@ export default createGlobalStyle`
   
   button{
     cursor: pointer;
+    transition: all 0.2s;
+  }
+  button:hover{
+      opacity: 0.8;
   }
   html, body, #root{
     min-height:100%;
@@ -19,7 +23,7 @@ export default createGlobalStyle`
     list-style: none;
   }
   body{
-    background-color: #E5E5E5;;
+    background: #FAFAFA;
     color: #333333;
     -webkit-font-smoothing: antialiased !important;
   }

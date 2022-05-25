@@ -2,6 +2,7 @@ import { BiSearch } from "react-icons/bi";
 import { FiChevronDown, FiChevronUp, FiEdit3, FiTrash } from "react-icons/fi";
 
 import Button from "../../../../components/Button";
+import Switch from "../../../../components/Switch";
 
 import * as S from "./styles";
 
@@ -50,7 +51,7 @@ export default function User() {
             <p>Administrador</p>
 
             <S.Status>
-              <span>SWITCH</span>
+              <Switch />
               <S.WrapperButton>
                 <button>
                   <FiEdit3 size={15} color="#999999" />

@@ -144,5 +144,11 @@ export const WrapperButton = styled.div`
     border-radius: 8px;
     padding: 16px;
     border: none;
+    :hover {
+      > svg {
+        transition: all 0.2s;
+        transform: translateY(-4px);
+      }
+    }
   }
 `;

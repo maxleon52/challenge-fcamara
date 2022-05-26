@@ -1,13 +1,36 @@
 import { useState } from "react";
+import api from "../../services/api";
 import * as S from "./styles";
 
-function Switch() {
-  const [isChecked, setIsChecked] = useState(false);
+interface SwitchProps {
+  isActivity: boolean;
+  userId: number;
+}
+function Switch({ isActivity, userId }: SwitchProps) {
+  const [isChecked, setIsChecked] = useState(isActivity);
+
+  async function handleStatus(userId: number) {
+    try {
+      setIsChecked(!isChecked);
+      await api.patch(`/users/${userId}`, {
+        status: !isChecked,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <S.Container isChecked={isChecked}>
-      <input type="checkbox" onClick={() => setIsChecked(!isChecked)} />
-    </S.Container>
+    <S.Wrapper>
+      <S.Container isChecked={isChecked}>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onClick={() => handleStatus(userId)}
+        />
+      </S.Container>
+      <strong>{isChecked ? "Ativo" : "Inativo"}</strong>
+    </S.Wrapper>
   );
 }
 

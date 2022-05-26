@@ -1,13 +1,39 @@
+import { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiChevronDown, FiChevronUp, FiEdit3, FiTrash } from "react-icons/fi";
+import api from "../../../../services/api";
 
 import Button from "../../../../components/Button";
 import Switch from "../../../../components/Switch";
 
 import * as S from "./styles";
 
+interface UserProps {
+  id: number;
+  name: string;
+  rede: string;
+  email: string;
+  profile: string;
+  status: boolean;
+}
+
 export default function User() {
   const optionsColumn = ["Rede", "Nome", "Perfil", "Status"];
+
+  const [users, setUsers] = useState<UserProps[]>([]);
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await api.get("/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getUser();
+  }, []);
 
   return (
     <S.Container>
@@ -28,8 +54,8 @@ export default function User() {
 
       <S.Content>
         <S.ColumnFilter>
-          {optionsColumn.map((item) => (
-            <button key={item}>
+          {optionsColumn.map((item, idx) => (
+            <button key={idx}>
               {item}
               <div>
                 <FiChevronUp size={8} />
@@ -40,28 +66,30 @@ export default function User() {
         </S.ColumnFilter>
 
         <S.ListUsers>
-          <S.User>
-            <p>Drogarias Conviva</p>
+          {users.map((user) => (
+            <S.User key={user.id}>
+              <p>{user.rede}</p>
 
-            <S.Name>
-              <p>André Gomes da Silva</p>
-              <small>andre.gomes@drogariasconviva.com.br</small>
-            </S.Name>
+              <S.Name>
+                <p>{user.name}</p>
+                <small title={user.email}>{user.email}</small>
+              </S.Name>
 
-            <p>Administrador</p>
+              <p>{user.profile}</p>
 
-            <S.Status>
-              <Switch />
-              <S.WrapperButton>
-                <button>
-                  <FiEdit3 size={15} color="#999999" />
-                </button>
-                <button>
-                  <FiTrash size={15} color=" #D23A55" />
-                </button>
-              </S.WrapperButton>
-            </S.Status>
-          </S.User>
+              <S.Status>
+                <Switch isActivity={user.status} userId={user.id} />
+                <S.WrapperButton>
+                  <button>
+                    <FiEdit3 size={15} color="#999999" />
+                  </button>
+                  <button>
+                    <FiTrash size={15} color=" #D23A55" />
+                  </button>
+                </S.WrapperButton>
+              </S.Status>
+            </S.User>
+          ))}
         </S.ListUsers>
       </S.Content>
     </S.Container>

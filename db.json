@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "rede": "Drogarias Conviva",
+      "name": "André Gomes da Silva",
+      "email": "andre.gomes@drogariasconviva.com.br",
+      "profile": "Administrador",
+      "status": true
+    },
+    {
+      "id": 2,
+      "rede": "Drogarias Conviva",
+      "name": "Enrico Samuel Mendes",
+      "email": "EnricoSamuelMendes@drogariasconviva.com.br",
+      "profile": "Gestor",
+      "status": false
+    },
+    {
+      "id": 3,
+      "rede": "Drogarias Conviva",
+      "name": "Nair Maitê Elisa",
+      "email": "NaiMaiteElisa@drogariasconviva.com.br",
+      "profile": "Supervisor",
+      "status": true
+    },
+    {
+      "id": 4,
+      "rede": "Drogarias Conviva",
+      "name": "Aurora Evelyn Tereza Silveira",
+      "email": "aurora_evelyn_silveira@maliziaarranjosflorais.com.br",
+      "profile": "Usuário",
+      "status": false
+    },
+    {
+      "id": 5,
+      "rede": "Drogarias Conviva",
+      "name": "Letícia Nina Monteiro",
+      "email": "leticia.nina.monteiro@jh2consulting.com",
+      "profile": "Administrador",
+      "status": false
+    }
+  ]
+}

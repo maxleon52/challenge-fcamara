@@ -3,6 +3,21 @@ import styled from "styled-components";
 interface ContainerProps {
   isChecked: boolean;
 }
+export const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 12px;
+
+  > strong {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.025em;
+    text-align: left;
+  }
+`;
+
 export const Container = styled.div<ContainerProps>`
   width: 60px;
   height: 35px;

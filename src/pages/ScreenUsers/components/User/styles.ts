@@ -96,6 +96,7 @@ export const User = styled.div`
   align-items: center;
   padding: 32px 22px;
   background-color: #fff;
+  column-gap: 8px;
 
   p {
     font-size: 16px;
@@ -116,6 +117,8 @@ export const User = styled.div`
 `;
 
 export const Name = styled.div`
+  overflow: hidden;
+
   small {
     color: #6c757d;
     font-size: 14px;
@@ -123,6 +126,8 @@ export const Name = styled.div`
     line-height: 22px;
     letter-spacing: 0em;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

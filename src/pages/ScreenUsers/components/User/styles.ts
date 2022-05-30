@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  display: grid;
+  row-gap: 8px;
+`;
 
 export const Header = styled.div`
   display: flex;
@@ -22,6 +25,7 @@ export const Header = styled.div`
   > div {
     display: flex;
     column-gap: 16px;
+    height: 50px;
   }
 `;
 
@@ -156,4 +160,12 @@ export const WrapperButton = styled.div`
       }
     }
   }
+`;
+
+export const FormUser = styled.form`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 32px;
+  background: #fff;
+  padding: 32px 24px;
 `;

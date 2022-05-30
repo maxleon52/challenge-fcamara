@@ -27,6 +27,7 @@ function Switch({ isActivity, userId }: SwitchProps) {
           type="checkbox"
           checked={isChecked}
           onClick={() => handleStatus(userId)}
+          onChange={() => {}}
         />
       </S.Container>
       <strong>{isChecked ? "Ativo" : "Inativo"}</strong>

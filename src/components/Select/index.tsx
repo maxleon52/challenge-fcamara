@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, Children, InputHTMLAttributes, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
 import * as S from "./styles";
@@ -8,19 +8,33 @@ interface OptionsProps {
   label: string;
 }
 
-interface SelectProps {
+interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: string;
+  value: string;
   options: OptionsProps[];
 }
 
-export default function Select({ label, name, options }: SelectProps) {
-  const [valueSelected, setValueSelected] = useState("");
+export default function Select({
+  label,
+  name,
+  options,
+  value,
+  onChange,
+  ...rest
+}: SelectProps) {
+  const [valueSelected, setValueSelected] = useState(value);
   const [isVisible, setIsVisible] = useState(false);
 
   function handleSelectOption(option: string) {
     setValueSelected(option);
     setIsVisible(false);
+
+    if (typeof onChange === "function") {
+      onChange({
+        target: { value: option, name },
+      } as unknown as ChangeEvent<HTMLInputElement>);
+    }
   }
 
   return (
@@ -35,14 +49,22 @@ export default function Select({ label, name, options }: SelectProps) {
             name={name}
             placeholder="Selecione um opção"
             onFocus={() => setIsVisible(true)}
+            readOnly
+            {...rest}
           />
-          <FiChevronDown size={15} color="#f39200"/>
+          <FiChevronDown size={15} color="#f39200" />
         </div>
       </S.WrapperInput>
 
       <S.Options isVisible={isVisible}>
-        {options.map((option) => (
+        {/* {Children.map(options, (option) => (
           <p onClick={() => handleSelectOption(option.value)}>{option.label}</p>
+        ))} */}
+
+        {options.map((option, idx) => (
+          <p key={idx} onClick={() => handleSelectOption(option.value)}>
+            {option.label}
+          </p>
         ))}
       </S.Options>
     </S.Container>

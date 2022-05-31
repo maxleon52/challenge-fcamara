@@ -2,16 +2,20 @@
   "users": [
     {
       "id": 1,
-      "network": "Drogarias Conviva",
-      "name": "André Gomes da Silva",
-      "email": "andre.gomes@drogariasconviva.com.br",
-      "profile": "Administrador",
+      "network": "Todas as redes",
+      "store": "Loja D",
+      "name": "André Gomes de sousa Lima",
+      "cpf": "111.222.333-45",
+      "email": "andre.sousa@fcamara.com.br",
+      "profile": "Gestor loja",
       "status": true
     },
     {
       "id": 2,
       "network": "Drogarias Conviva",
+      "store": "Loja A",
       "name": "Enrico Samuel Mendes",
+      "cpf": "234.456.756-76",
       "email": "EnricoSamuelMendes@drogariasconviva.com.br",
       "profile": "Gestor",
       "status": false
@@ -19,7 +23,9 @@
     {
       "id": 3,
       "network": "Drogarias Conviva",
-      "name": "Nair Maitê Elisa",
+      "store": "Loja A",
+      "name": "Nairêêêê Maitê Elisa",
+      "cpf": "234.456.756-76",
       "email": "NaiMaiteElisa@drogariasconviva.com.br",
       "profile": "Supervisor",
       "status": true
@@ -27,7 +33,9 @@
     {
       "id": 4,
       "network": "Drogarias Conviva",
+      "store": "Loja A",
       "name": "Aurora Evelyn Tereza Silveira",
+      "cpf": "234.456.756-76",
       "email": "aurora_evelyn_silveira@maliziaarranjosflorais.com.br",
       "profile": "Usuário",
       "status": false
@@ -35,10 +43,39 @@
     {
       "id": 5,
       "network": "Drogarias Conviva",
+      "store": "Loja A",
       "name": "Letícia Nina Monteiro",
+      "cpf": "234.456.756-76",
       "email": "leticia.nina.monteiro@jh2consulting.com",
       "profile": "Administrador",
       "status": false
+    },
+    {
+      "name": "Maxwell Alves",
+      "cpf": "987.423.456-54",
+      "email": "maxleon522@gmail.com",
+      "profile": "F/F",
+      "network": "Farmaviva",
+      "store": "Loja C",
+      "id": 6
+    },
+    {
+      "name": "JJ da silva",
+      "cpf": "123.234.345-99",
+      "email": "jj@gmail.com",
+      "profile": "Funcionario loja",
+      "network": "Farmaviva",
+      "store": "Loja D",
+      "id": 7
+    },
+    {
+      "name": "Carlos Moura",
+      "cpf": "987.423.456-54",
+      "email": "maxleon522@gmail.com",
+      "profile": "Gestor rede",
+      "network": "Farmaviva",
+      "store": "Loja C",
+      "id": 8
     }
   ]
 }

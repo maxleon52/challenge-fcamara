@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import {
@@ -15,14 +15,22 @@ import Button from "../../../../components/Button";
 import Switch from "../../../../components/Switch";
 import Select from "../../../../components/Select";
 
+import {
+  optionsNetwork,
+  optionsProfile,
+  optionsStore,
+} from "../../../../constants/pageUser";
+
 import * as S from "./styles";
 
 interface UserProps {
   id: number;
   name: string;
+  cpf: string;
   network: string;
   email: string;
   profile: string;
+  store: string;
   status: boolean;
 }
 
@@ -44,6 +52,7 @@ export default function User() {
   };
 
   const [users, setUsers] = useState<UserProps[]>([]);
+  const [userEdit, setUserEdit] = useState<any>();
   const [isNewOrEdit, setIsNewOrEdit] = useState(false);
   // const [usersReOrders, setUsersReOrders] = useState<UserProps[]>([]);
 
@@ -75,19 +84,46 @@ export default function User() {
     setUsers(arrayReordened);
   }
 
-  const options = [
-    { value: "Administrador", label: "Administrador" },
-    { value: "F/F", label: "F/F" },
-    { value: "Gestor rede", label: "Gestor Rede" },
-    { value: "Gestor loja", label: "Gestor Loja" },
-    { value: "Funcionario loja", label: "Funcionário Loja" },
-  ];
+  function handleEditUser(user: UserProps) {
+    setUserEdit(user);
+    setIsNewOrEdit(!isNewOrEdit);
+  }
 
-  useEffect(() => {
-    // setUsers(usersReOrders);
-    // console.log("users: ", users);
-    console.log("isNewOrEdit: ", isNewOrEdit);
-  }, [isNewOrEdit]);
+  function onChange(e: any) {
+    const { name, value } = e.target;
+    console.log({ name: value });
+
+    setUserEdit({ ...userEdit, [name]: value });
+  }
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      // const formData = new FormData(e.target as HTMLFormElement);
+      // const data = Object.fromEntries(formData);
+
+      if (userEdit.id !== undefined) {
+        const response = await api.put(`/users/${userEdit.id}`, userEdit);
+        console.log("atualizou");
+        console.log("userEdit: ", userEdit);
+
+        response.status === 201 && setIsNewOrEdit(!isNewOrEdit);
+      } else {
+        const response = await api.post("/users", userEdit);
+        response.status === 201 && setIsNewOrEdit(!isNewOrEdit);
+        console.log("criou");
+
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // useEffect(() => {
+  //   console.log("userEdit: ", userEdit);
+  // }, [userEdit]);
 
   return (
     <S.Container>
@@ -104,11 +140,19 @@ export default function User() {
               </button>
             </S.SearchBox>
           )}
-          <Button
-            icon={isNewOrEdit === true ? FiSave : ""}
-            text={isNewOrEdit === true ? "Salvar alterações" : "Novo usuário"}
-            onClick={() => setIsNewOrEdit(!isNewOrEdit)}
-          />
+          {isNewOrEdit === false ? (
+            <Button
+              text={"Novo usuário"}
+              onClick={() => setIsNewOrEdit(!isNewOrEdit)}
+            />
+          ) : (
+            <Button
+              form="my-form"
+              icon={FiSave}
+              text={"Salvar alterações"}
+              type="submit"
+            />
+          )}
         </div>
       </S.Header>
 
@@ -142,7 +186,7 @@ export default function User() {
                   <S.Status>
                     <Switch isActivity={user.status} userId={user.id} />
                     <S.WrapperButton>
-                      <button>
+                      <button onClick={() => handleEditUser(user)}>
                         <FiEdit3 size={15} color="#999999" />
                       </button>
                       <button>
@@ -155,11 +199,50 @@ export default function User() {
             </S.ListUsers>
           </>
         ) : (
-          <S.FormUser>
-            <Input label="Nome do usuário" name="name" />
-            <Input label="CPF" name="cpf" />
-            <Input label="E-mail" name="email" />
-            <Select label="Perfil de acesso" name="network" options={options}/>
+          <S.FormUser onSubmit={handleSubmit} id="my-form">
+            <Input
+              value={userEdit?.name || ""}
+              label="Nome do usuário"
+              name="name"
+              onChange={onChange}
+              required
+            />
+            <Input
+              value={userEdit?.cpf || ""}
+              label="CPF"
+              name="cpf"
+              onChange={onChange}
+              required
+            />
+            <Input
+              value={userEdit?.email || ""}
+              label="E-mail"
+              name="email"
+              onChange={onChange}
+              required
+            />
+            <Select
+              value={userEdit?.profile || ""}
+              label="Perfil de acesso"
+              name="profile"
+              onChange={onChange}
+              options={optionsProfile}
+            />
+            <Select
+              value={userEdit?.network || ""}
+              label="Rede"
+              name="network"
+              onChange={onChange}
+              options={optionsNetwork}
+            />
+            <Select
+              value={userEdit?.store || ""}
+              label="Loja"
+              name="store"
+              onChange={onChange}
+              options={optionsStore}
+            />
+            {/* <button type="submit">Enviar</button> */}
           </S.FormUser>
         )}
       </S.Content>

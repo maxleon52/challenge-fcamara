@@ -4,7 +4,7 @@
       "id": 1,
       "network": "Todas as redes",
       "store": "Loja D",
-      "name": "André Gomes de sousa Lima",
+      "name": "André Gomes da Gomes",
       "cpf": "111.222.333-45",
       "email": "andre.sousa@fcamara.com.br",
       "profile": "Gestor loja",
@@ -24,11 +24,11 @@
       "id": 3,
       "network": "Drogarias Conviva",
       "store": "Loja A",
-      "name": "Nairêêêê Maitê Elisa",
+      "name": "Nairê Maitê Elisa Sanchez",
       "cpf": "234.456.756-76",
       "email": "NaiMaiteElisa@drogariasconviva.com.br",
       "profile": "Supervisor",
-      "status": true
+      "status": false
     },
     {
       "id": 4,
@@ -48,34 +48,7 @@
       "cpf": "234.456.756-76",
       "email": "leticia.nina.monteiro@jh2consulting.com",
       "profile": "Administrador",
-      "status": false
-    },
-    {
-      "name": "Maxwell Alves",
-      "cpf": "987.423.456-54",
-      "email": "maxleon522@gmail.com",
-      "profile": "F/F",
-      "network": "Farmaviva",
-      "store": "Loja C",
-      "id": 6
-    },
-    {
-      "name": "JJ da silva",
-      "cpf": "123.234.345-99",
-      "email": "jj@gmail.com",
-      "profile": "Funcionario loja",
-      "network": "Farmaviva",
-      "store": "Loja D",
-      "id": 7
-    },
-    {
-      "name": "Carlos Moura",
-      "cpf": "987.423.456-54",
-      "email": "maxleon522@gmail.com",
-      "profile": "Gestor rede",
-      "network": "Farmaviva",
-      "store": "Loja C",
-      "id": 8
+      "status": true
     }
   ]
 }

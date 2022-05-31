@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import {
@@ -11,6 +12,7 @@ import {
 import api from "../../../../services/api";
 
 import Input from "../../../../components/Input";
+import InputMask from "../../../../components/InputMask";
 import Button from "../../../../components/Button";
 import Switch from "../../../../components/Switch";
 import Select from "../../../../components/Select";
@@ -54,7 +56,9 @@ export default function User() {
   const [users, setUsers] = useState<UserProps[]>([]);
   const [userEdit, setUserEdit] = useState<any>();
   const [isNewOrEdit, setIsNewOrEdit] = useState(false);
-  // const [usersReOrders, setUsersReOrders] = useState<UserProps[]>([]);
+  const [isReOrder, setIsReOrder] = useState(false);
+  const [updateList, setUpdateList] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     async function getUser() {
@@ -66,22 +70,32 @@ export default function User() {
       }
     }
     getUser();
-  }, []);
+  }, [updateList]);
+
+  const allUsers = useMemo(() => {
+    const lowerSearch = search.toLocaleLowerCase();
+    return users.filter((user) =>
+      user.name.toLocaleLowerCase().includes(lowerSearch)
+    );
+  }, [search, users, isReOrder]);
 
   function reOrder(nameColumn: keyof UserProps) {
     const arrayReordened = users.sort(function (a, b) {
       if (a[nameColumn] > b[nameColumn]) {
+        console.log("Caiu no maior!!!");
+        
         return 1;
       }
       if (a[nameColumn] < b[nameColumn]) {
+        console.log("Caiu no menor!!!");
         return -1;
       }
       // a must be equal to b
       return 0;
     });
     console.log("arrayReordened: ", arrayReordened);
-    // setUsersReOrders(reorder);
     setUsers(arrayReordened);
+    setIsReOrder(!isReOrder);
   }
 
   function handleEditUser(user: UserProps) {
@@ -89,10 +103,18 @@ export default function User() {
     setIsNewOrEdit(!isNewOrEdit);
   }
 
+  async function handleDeleteUser(id: number) {
+    try {
+      await api.delete(`/users/${id}`);
+      setUpdateList(!updateList);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function onChange(e: any) {
     const { name, value } = e.target;
     console.log({ name: value });
-
     setUserEdit({ ...userEdit, [name]: value });
   }
 
@@ -106,24 +128,24 @@ export default function User() {
       if (userEdit.id !== undefined) {
         const response = await api.put(`/users/${userEdit.id}`, userEdit);
         console.log("atualizou");
-        console.log("userEdit: ", userEdit);
-
-        response.status === 201 && setIsNewOrEdit(!isNewOrEdit);
+        console.log("response: ", response);
+        if (response.status === 200) {
+          setIsNewOrEdit(!isNewOrEdit);
+          setUpdateList(!updateList); // apenas pra forçar a remontagem do componente, o valor não importa
+        }
       } else {
         const response = await api.post("/users", userEdit);
-        response.status === 201 && setIsNewOrEdit(!isNewOrEdit);
+        if (response.status === 201) {
+          setIsNewOrEdit(!isNewOrEdit);
+          setUpdateList(!updateList); // apenas pra forçar a remontagem do componente, o valor não importa
+        }
         console.log("criou");
-
-        console.log(response);
+        // console.log(response);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
-  // useEffect(() => {
-  //   console.log("userEdit: ", userEdit);
-  // }, [userEdit]);
 
   return (
     <S.Container>
@@ -133,7 +155,12 @@ export default function User() {
         <div>
           {!isNewOrEdit && (
             <S.SearchBox>
-              <input type="text" placeholder="Buscar usuário" />
+              <input
+                type="text"
+                placeholder="Buscar usuário"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
 
               <button type="button">
                 <BiSearch size={15} />
@@ -172,7 +199,7 @@ export default function User() {
             </S.ColumnFilter>
 
             <S.ListUsers>
-              {users.map((user) => (
+              {allUsers.map((user) => (
                 <S.User key={user.id}>
                   <p>{user.network}</p>
 
@@ -189,7 +216,7 @@ export default function User() {
                       <button onClick={() => handleEditUser(user)}>
                         <FiEdit3 size={15} color="#999999" />
                       </button>
-                      <button>
+                      <button onClick={() => handleDeleteUser(user.id)}>
                         <FiTrash size={15} color=" #D23A55" />
                       </button>
                     </S.WrapperButton>
@@ -207,12 +234,11 @@ export default function User() {
               onChange={onChange}
               required
             />
-            <Input
+            <InputMask
               value={userEdit?.cpf || ""}
               label="CPF"
               name="cpf"
               onChange={onChange}
-              required
             />
             <Input
               value={userEdit?.email || ""}
@@ -242,7 +268,6 @@ export default function User() {
               onChange={onChange}
               options={optionsStore}
             />
-            {/* <button type="submit">Enviar</button> */}
           </S.FormUser>
         )}
       </S.Content>

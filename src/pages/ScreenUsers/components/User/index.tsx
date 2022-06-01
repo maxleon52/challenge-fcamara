@@ -8,6 +8,8 @@ import {
   FiEdit3,
   FiSave,
   FiTrash,
+  FiX,
+  FiZap,
 } from "react-icons/fi";
 import api from "../../../../services/api";
 
@@ -55,7 +57,8 @@ export default function User() {
 
   const [users, setUsers] = useState<UserProps[]>([]);
   const [userEdit, setUserEdit] = useState<any>();
-  const [isNewOrEdit, setIsNewOrEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isNew, setIsNew] = useState(false);
   const [isReOrder, setIsReOrder] = useState(false);
   const [updateList, setUpdateList] = useState(false);
   const [search, setSearch] = useState("");
@@ -82,30 +85,27 @@ export default function User() {
   function reOrder(nameColumn: keyof UserProps) {
     const arrayReordened = users.sort(function (a, b) {
       if (a[nameColumn] > b[nameColumn]) {
-        console.log("Caiu no maior!!!");
-        
         return 1;
       }
       if (a[nameColumn] < b[nameColumn]) {
-        console.log("Caiu no menor!!!");
         return -1;
       }
-      // a must be equal to b
       return 0;
     });
-    console.log("arrayReordened: ", arrayReordened);
     setUsers(arrayReordened);
     setIsReOrder(!isReOrder);
   }
 
   function handleEditUser(user: UserProps) {
     setUserEdit(user);
-    setIsNewOrEdit(!isNewOrEdit);
+    setIsNew(false);
+    setIsEdit(true);
   }
 
   async function handleDeleteUser(id: number) {
     try {
       await api.delete(`/users/${id}`);
+      setIsEdit(false);
       setUpdateList(!updateList);
     } catch (error) {
       console.log(error);
@@ -118,6 +118,10 @@ export default function User() {
     setUserEdit({ ...userEdit, [name]: value });
   }
 
+  function forceList() {
+    setUpdateList(!updateList);
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -127,20 +131,18 @@ export default function User() {
 
       if (userEdit.id !== undefined) {
         const response = await api.put(`/users/${userEdit.id}`, userEdit);
-        console.log("atualizou");
-        console.log("response: ", response);
         if (response.status === 200) {
-          setIsNewOrEdit(!isNewOrEdit);
+          setIsEdit(false);
+          setIsNew(false);
           setUpdateList(!updateList); // apenas pra forçar a remontagem do componente, o valor não importa
         }
       } else {
         const response = await api.post("/users", userEdit);
         if (response.status === 201) {
-          setIsNewOrEdit(!isNewOrEdit);
+          setIsEdit(false);
+          setIsNew(false);
           setUpdateList(!updateList); // apenas pra forçar a remontagem do componente, o valor não importa
         }
-        console.log("criou");
-        // console.log(response);
       }
     } catch (error) {
       console.log(error);
@@ -150,10 +152,14 @@ export default function User() {
   return (
     <S.Container>
       <S.Header>
-        <h2>{isNewOrEdit === true ? "Novo usuário" : "Usuários"}</h2>
+        <h2>
+          {isNew === false && isEdit === false && "Usuários"}
+          {isNew === true && isEdit === false && "Novo usuário"}
+          {isEdit === true && "Editar usuário"}
+        </h2>
 
         <div>
-          {!isNewOrEdit && (
+          {!isNew && userEdit?.id === undefined && (
             <S.SearchBox>
               <input
                 type="text"
@@ -167,12 +173,12 @@ export default function User() {
               </button>
             </S.SearchBox>
           )}
-          {isNewOrEdit === false ? (
-            <Button
-              text={"Novo usuário"}
-              onClick={() => setIsNewOrEdit(!isNewOrEdit)}
-            />
-          ) : (
+
+          {isNew === false && isEdit === false && (
+            <Button text={"Novo usuário"} onClick={() => setIsNew(!isNew)} />
+          )}
+
+          {isNew === true && isEdit === false && (
             <Button
               form="my-form"
               icon={FiSave}
@@ -180,11 +186,34 @@ export default function User() {
               type="submit"
             />
           )}
+
+          {isEdit === true && isNew === false && (
+            <S.WrapperBtns>
+              <Switch
+                isActivity={userEdit?.status}
+                userId={userEdit?.id}
+                forceList={forceList}
+              />
+              <Button icon={FiZap} text={"Resetar senha"} id="btn-reset" />
+              <Button
+                form="my-form"
+                icon={FiSave}
+                text={"Salvar alterações"}
+                type="submit"
+              />
+              <Button
+                icon={FiX}
+                text={"Excluir usuário"}
+                onClick={() => handleDeleteUser(userEdit.id)}
+                backgroundColor="#D23A55"
+              />
+            </S.WrapperBtns>
+          )}
         </div>
       </S.Header>
 
       <S.Content>
-        {isNewOrEdit === false ? (
+        {isEdit === false && isNew === false ? (
           <>
             <S.ColumnFilter>
               {optionsColumn.map((nameColumn, idx) => (
@@ -211,7 +240,11 @@ export default function User() {
                   <p>{user.profile}</p>
 
                   <S.Status>
-                    <Switch isActivity={user.status} userId={user.id} />
+                    <Switch
+                      isActivity={user.status}
+                      userId={user.id}
+                      forceList={forceList}
+                    />
                     <S.WrapperButton>
                       <button onClick={() => handleEditUser(user)}>
                         <FiEdit3 size={15} color="#999999" />

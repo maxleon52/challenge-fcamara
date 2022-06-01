@@ -29,6 +29,34 @@ export const Header = styled.div`
   }
 `;
 
+export const WrapperBtns = styled.div`
+  display: flex;
+  column-gap: 16px;
+
+  > button {
+    flex: none;
+    width: fit-content;
+  }
+
+  #btn-reset {
+    border: 1px solid #dddddd;
+    background-color: transparent;
+    color: #333333;
+    > svg {
+      stroke: #dddddd;
+    }
+
+    :hover {
+      border: 1px solid #f39200;
+      background-color: transparent;
+      color: #f39200;
+      > svg {
+        stroke: #f39200;
+      }
+    }
+  }
+`;
+
 export const SearchBox = styled.div`
   display: flex;
   align-items: center;

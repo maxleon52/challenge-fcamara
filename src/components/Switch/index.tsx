@@ -5,8 +5,9 @@ import * as S from "./styles";
 interface SwitchProps {
   isActivity: boolean;
   userId: number;
+  forceList: () => void;
 }
-function Switch({ isActivity, userId }: SwitchProps) {
+function Switch({ isActivity, userId, forceList }: SwitchProps) {
   const [isChecked, setIsChecked] = useState(isActivity);
 
   async function handleStatus(userId: number) {
@@ -15,6 +16,7 @@ function Switch({ isActivity, userId }: SwitchProps) {
       await api.patch(`/users/${userId}`, {
         status: !isChecked,
       });
+      forceList();
     } catch (error) {
       console.log(error);
     }

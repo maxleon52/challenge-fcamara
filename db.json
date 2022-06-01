@@ -2,12 +2,12 @@
   "users": [
     {
       "id": 1,
-      "network": "Todas as redes",
-      "store": "Loja D",
-      "name": "André Gomes da Gomes",
-      "cpf": "111.222.333-45",
-      "email": "andre.sousa@fcamara.com.br",
-      "profile": "Gestor loja",
+      "network": "Farmaviva",
+      "store": "Loja C",
+      "name": "André Gomes da Gomes Lima",
+      "cpf": "111.222.333-99",
+      "email": "andre.gomes@fcamara.com.br",
+      "profile": "Gestor rede",
       "status": true
     },
     {
@@ -18,7 +18,7 @@
       "cpf": "234.456.756-76",
       "email": "EnricoSamuelMendes@drogariasconviva.com.br",
       "profile": "Gestor",
-      "status": false
+      "status": true
     },
     {
       "id": 3,

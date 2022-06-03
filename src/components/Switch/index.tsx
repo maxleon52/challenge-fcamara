@@ -1,38 +1,21 @@
-import { useState } from "react";
-import api from "../../services/api";
+import { InputHTMLAttributes } from "react";
 import * as S from "./styles";
 
-interface SwitchProps {
+interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
   isActivity: boolean;
-  userId: number;
-  forceList: () => void;
 }
-function Switch({ isActivity, userId, forceList }: SwitchProps) {
-  const [isChecked, setIsChecked] = useState(isActivity);
-
-  async function handleStatus(userId: number) {
-    try {
-      setIsChecked(!isChecked);
-      await api.patch(`/users/${userId}`, {
-        status: !isChecked,
-      });
-      forceList();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+function Switch({ isActivity, ...rest }: SwitchProps) {
   return (
     <S.Wrapper>
-      <S.Container isChecked={isChecked}>
+      <S.Container isChecked={isActivity} {...rest}>
         <input
           type="checkbox"
-          checked={isChecked}
-          onClick={() => handleStatus(userId)}
+          checked={isActivity}
+          // onClick={() => handleStatus(userId)}
           onChange={() => {}}
         />
       </S.Container>
-      <strong>{isChecked ? "Ativo" : "Inativo"}</strong>
+      <strong>{isActivity ? "Ativo" : "Inativo"}</strong>
     </S.Wrapper>
   );
 }

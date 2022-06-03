@@ -2,12 +2,12 @@
   "users": [
     {
       "id": 1,
-      "network": "Farmaviva",
-      "store": "Loja C",
-      "name": "André Gomes da Gomes Lima",
-      "cpf": "111.222.333-99",
-      "email": "andre.gomes@fcamara.com.br",
-      "profile": "Gestor rede",
+      "network": "Drogarias Conviva",
+      "store": "Loja B",
+      "name": "José da Silva Sousa",
+      "cpf": "233.456.324-99",
+      "email": "srjose@drogariasconviva.com.br",
+      "profile": "Gestor",
       "status": true
     },
     {
@@ -28,7 +28,7 @@
       "cpf": "234.456.756-76",
       "email": "NaiMaiteElisa@drogariasconviva.com.br",
       "profile": "Supervisor",
-      "status": false
+      "status": true
     },
     {
       "id": 4,
@@ -38,16 +38,6 @@
       "cpf": "234.456.756-76",
       "email": "aurora_evelyn_silveira@maliziaarranjosflorais.com.br",
       "profile": "Usuário",
-      "status": false
-    },
-    {
-      "id": 5,
-      "network": "Drogarias Conviva",
-      "store": "Loja A",
-      "name": "Letícia Nina Monteiro",
-      "cpf": "234.456.756-76",
-      "email": "leticia.nina.monteiro@jh2consulting.com",
-      "profile": "Administrador",
       "status": true
     }
   ]

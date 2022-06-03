@@ -13,6 +13,7 @@ interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   value: string;
   options: OptionsProps[];
+  errors?: any[];
 }
 
 export default function Select({
@@ -21,6 +22,7 @@ export default function Select({
   options,
   value,
   onChange,
+  errors,
   ...rest
 }: SelectProps) {
   const [valueSelected, setValueSelected] = useState(value);
@@ -44,6 +46,7 @@ export default function Select({
 
         <div className="container-input">
           <input
+            style={{ borderColor: errors !== undefined ? "#EF5350" : "" }}
             type="text"
             value={valueSelected}
             name={name}
@@ -54,6 +57,9 @@ export default function Select({
           />
           <FiChevronDown size={15} color="#f39200" />
         </div>
+        <p style={{ color: "#EF5350" }}>
+          {errors?.map((item) => item.path === name && item.message)}
+        </p>
       </S.WrapperInput>
 
       <S.Options isVisible={isVisible}>

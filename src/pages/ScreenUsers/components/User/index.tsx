@@ -2,6 +2,8 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
+import * as yup from "yup";
+
 import {
   FiChevronDown,
   FiChevronUp,
@@ -26,10 +28,10 @@ import {
   optionsStore,
 } from "../../../../constants/pageUser";
 
-import * as S from "./styles";
 import ResetPassword from "./components/ResetPassword";
 import DeleteUser from "./components/DeleteUser";
 import Success from "./components/Success";
+import * as S from "./styles";
 
 interface UserProps {
   id: number;
@@ -43,6 +45,24 @@ interface UserProps {
 }
 
 export default function User() {
+  const schema = yup.object({
+    name: yup
+      .string()
+      .required("Nome obrigatório")
+      .min(3, "Minimo 3 caracteres"),
+    email: yup
+      .string()
+      .required("E-mail obrigatório")
+      .email("Preencha com um email válido!"),
+    cpf: yup
+      .string()
+      .required("CPF obrigatório")
+      .matches(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/, "CPF incompleto"),
+    profile: yup.string().required("Selecione uma das opções"),
+    network: yup.string().required("Selecione uma das opções"),
+    store: yup.string().required("Selecione uma das opções"),
+  });
+
   const optionsColumn: Array<keyof UserProps> = [
     "network",
     "name",
@@ -68,6 +88,7 @@ export default function User() {
   const [search, setSearch] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [modalState, setModalState] = useState("");
+  const [myErrors, setMyErrors] = useState([]);
 
   async function handleStatus(userId: number, status: boolean) {
     try {
@@ -122,6 +143,7 @@ export default function User() {
     setUserEdit(user);
     setIsNew(false);
     setIsEdit(true);
+    console.log("tam cpf: ", user.cpf.length);
   }
 
   async function handleDeleteUser(id: number) {
@@ -160,10 +182,11 @@ export default function User() {
     e.preventDefault();
 
     try {
-      // const formData = new FormData(e.target as HTMLFormElement);
-      // const data = Object.fromEntries(formData);
+      const formData = new FormData(e.target as HTMLFormElement);
+      const data = Object.fromEntries(formData);
 
       if (userEdit.id !== undefined) {
+        await schema.validate(userEdit, { abortEarly: false });
         const response = await api.put(`/users/${userEdit.id}`, userEdit);
         if (response.status === 200) {
           console.log("Atualizou!!!");
@@ -181,7 +204,10 @@ export default function User() {
           setUpdateList(!updateList);
         }
       } else {
-        const response = await api.post("/users", userEdit);
+        console.log({ data });
+
+        await schema.validate(data, { abortEarly: false });
+        const response = await api.post("/users", data);
         if (response.status === 201) {
           console.log("criou!!!");
 
@@ -198,8 +224,10 @@ export default function User() {
           setUpdateList(!updateList);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err: any) {
+      e.preventDefault();
+      setMyErrors(err?.inner);
+      console.log(err);
     }
   }
 
@@ -330,20 +358,21 @@ export default function User() {
                 label="Nome do usuário"
                 name="name"
                 onChange={onChange}
-                required
+                errors={myErrors}
               />
               <InputMask
                 value={userEdit?.cpf || ""}
                 label="CPF"
                 name="cpf"
                 onChange={onChange}
+                errors={myErrors}
               />
               <Input
                 value={userEdit?.email || ""}
                 label="E-mail"
                 name="email"
                 onChange={onChange}
-                required
+                errors={myErrors}
               />
               <Select
                 value={userEdit?.profile || ""}
@@ -351,6 +380,7 @@ export default function User() {
                 name="profile"
                 onChange={onChange}
                 options={optionsProfile}
+                errors={myErrors}
               />
               <Select
                 value={userEdit?.network || ""}
@@ -358,6 +388,7 @@ export default function User() {
                 name="network"
                 onChange={onChange}
                 options={optionsNetwork}
+                errors={myErrors}
               />
               <Select
                 value={userEdit?.store || ""}
@@ -365,6 +396,7 @@ export default function User() {
                 name="store"
                 onChange={onChange}
                 options={optionsStore}
+                errors={myErrors}
               />
             </S.FormUser>
           )}

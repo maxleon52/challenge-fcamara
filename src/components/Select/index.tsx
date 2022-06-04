@@ -46,7 +46,6 @@ export default function Select({
 
         <div className="container-input">
           <input
-            style={{ borderColor: errors !== undefined ? "#EF5350" : "" }}
             type="text"
             value={valueSelected}
             name={name}
@@ -54,6 +53,10 @@ export default function Select({
             onFocus={() => setIsVisible(true)}
             readOnly
             {...rest}
+            style={{
+              borderColor:
+                errors !== undefined && errors?.length > 0 ? "#EF5350" : "",
+            }}
           />
           <FiChevronDown size={15} color="#f39200" />
         </div>

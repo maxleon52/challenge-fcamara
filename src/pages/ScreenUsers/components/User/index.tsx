@@ -88,7 +88,7 @@ export default function User() {
   const [search, setSearch] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [modalState, setModalState] = useState("");
-  const [myErrors, setMyErrors] = useState([]);
+  const [myErrors, setMyErrors] = useState<any[]>([]);
 
   async function handleStatus(userId: number, status: boolean) {
     try {
@@ -182,10 +182,12 @@ export default function User() {
     e.preventDefault();
 
     try {
-      const formData = new FormData(e.target as HTMLFormElement);
-      const data = Object.fromEntries(formData);
+      // const formData = new FormData(e.target as HTMLFormElement);
+      // const data = Object.fromEntries(formData);
 
-      if (userEdit.id !== undefined) {
+      console.log({ userEdit });
+
+      if (userEdit?.id !== undefined) {
         await schema.validate(userEdit, { abortEarly: false });
         const response = await api.put(`/users/${userEdit.id}`, userEdit);
         if (response.status === 200) {
@@ -193,7 +195,7 @@ export default function User() {
 
           setModalState("success");
           setIsOpenModal(!isOpenModal);
-
+          setMyErrors([]);
           setTimeout(() => {
             setUserEdit(undefined);
             setIsEdit(false);
@@ -204,16 +206,17 @@ export default function User() {
           setUpdateList(!updateList);
         }
       } else {
-        console.log({ data });
+        console.log({ userEdit });
 
-        await schema.validate(data, { abortEarly: false });
-        const response = await api.post("/users", data);
+        await schema.validate(userEdit, { abortEarly: false });
+        const response = await api.post("/users", userEdit);
         if (response.status === 201) {
           console.log("criou!!!");
 
           setUserEdit(undefined);
           setIsOpenModal(!isOpenModal);
           setModalState("success");
+          setMyErrors([]);
 
           setTimeout(() => {
             setIsEdit(false);
@@ -227,14 +230,15 @@ export default function User() {
     } catch (err: any) {
       e.preventDefault();
       setMyErrors(err?.inner);
-      console.log(err);
+      console.error("err: ", err);
     }
   }
 
   useEffect(() => {
     // console.log("userEdit aqui: ", userEdit);
     console.log("modalState: ", modalState);
-  }, [modalState]);
+    console.log("myErrors: ", myErrors);
+  }, [modalState, myErrors]);
 
   return (
     <>

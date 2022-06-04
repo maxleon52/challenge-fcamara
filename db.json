@@ -4,7 +4,7 @@
       "id": 1,
       "network": "Drogarias Conviva",
       "store": "Loja B",
-      "name": "José da Silva Sousa",
+      "name": "José da Silva",
       "cpf": "233.456.344-44",
       "email": "srjose@drogariasconviva.com.br",
       "profile": "Gestor",
@@ -38,16 +38,6 @@
       "cpf": "234.456.756-76",
       "email": "aurora_evelyn_silveira@maliziaarranjosflorais.com.br",
       "profile": "Usuário",
-      "status": true
-    },
-    {
-      "id": 5,
-      "network": "",
-      "store": "",
-      "name": "",
-      "cpf": "",
-      "email": "",
-      "profile": "",
       "status": true
     }
   ]

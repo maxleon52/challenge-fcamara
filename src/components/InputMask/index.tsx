@@ -20,7 +20,10 @@ function InputMask({ label, name, value, errors, onChange }: InputMaskProps) {
         name={name}
         value={value}
         onChange={onChange}
-        style={{ borderColor: errors !== undefined ? "#EF5350" : "" }}
+        style={{
+          borderColor:
+            errors !== undefined && errors?.length > 0 ? "#EF5350" : "",
+        }}
       />
       <p style={{ color: "#EF5350" }}>
         {errors?.map((item) => item.path === name && item.message)}

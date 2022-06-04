@@ -13,7 +13,10 @@ function Input({ label, name, errors, ...rest }: InputProps) {
     <S.Container>
       <label htmlFor="name">{label}</label>
       <input
-        style={{ borderColor: errors !== undefined ? "#EF5350" : "" }}
+        style={{
+          borderColor:
+            errors !== undefined && errors?.length > 0 ? "#EF5350" : "",
+        }}
         type="text"
         name={name}
         {...rest}
